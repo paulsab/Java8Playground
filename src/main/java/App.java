@@ -3,6 +3,7 @@ import com.sabstuff.lambda.App.AddressForm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * User: P.Sabatino (paul@qstartlabs.com)
@@ -16,7 +17,7 @@ public class App {
 
         App a = new App();
         long start = System.currentTimeMillis();
-        List<Address> list = generateAddressList(100000);
+        List<Address> list = generateAddressList(1000000);
         System.out.println("list generation = " + (System.currentTimeMillis() - start) + "ms");
 
         start = System.currentTimeMillis();
@@ -49,9 +50,11 @@ public class App {
 
     public List<AddressForm> runParallel(List<Address> list) {
 
-        List<AddressForm> forms = new ArrayList<AddressForm>();
-        list.parallelStream()
-                .map(p -> populateForm(p)).map(p->forms.add(p));
+//        List<AddressForm> forms = new ArrayList<AddressForm>();
+
+        List<AddressForm> forms =
+        list.parallelStream().map(p->populateForm(p))
+                .collect(Collectors.toList());
 
         return forms;
     }
